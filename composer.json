@@ -27,10 +27,10 @@
         "think": {
             "services": [
                 "itinysun\\model\\helper\\Service"
-            ]
-        },
-        "config": {
-            "model_help": "config/model_help.php"
+            ],
+            "config": {
+                "model_help": "config/model_help.php"
+            }
         }
     }
 }
