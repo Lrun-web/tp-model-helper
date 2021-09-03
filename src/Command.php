@@ -407,14 +407,7 @@ class Command extends \think\console\Command
 
         if($this->config['over_write_phpdoc']){
             if ($originalDoc) {
-                $contents = str_replace($originalDoc, '', $contents);
-            } else {
-                $needle  = "class {$classname}";
-                $replace = "" . PHP_EOL . "class {$classname}";
-                $pos     = strpos($contents, $needle);
-                if (false !== $pos) {
-                    $contents = substr_replace($contents, $replace, $pos, strlen($needle));
-                }
+                $contents = str_replace(PHP_EOL.$originalDoc, '', $contents);
             }
         }
         if($this->config['write_schema']){
