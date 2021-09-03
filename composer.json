@@ -1,0 +1,36 @@
+{
+    "name": "itinysun/tp-model-helper",
+    "description": "a vendor for thinkphp6.*,help generate phpdocs for model class",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Itinysun",
+            "email": "860760361@qq.com"
+        }
+    ],
+    "require": {
+        "topthink/framework": "^6.0",
+        "symfony/class-loader": "^2.3|^3.0",
+        "phpdocumentor/reflection-docblock": "^3.1",
+        "topthink/think-helper": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "itinysun\\model\\helper\\": "src"
+        }
+    },
+    "extra": {
+        "think": {
+            "services": [
+                "itinysun\\model\\helper\\Service"
+            ]
+        },
+        "config": {
+            "model_help": "config/model_help.php"
+        }
+    }
+}
