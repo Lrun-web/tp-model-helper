@@ -120,7 +120,7 @@ class Command extends \think\console\Command
     protected function execute(Input $input, Output $output)
     {
         $this->dirs = $this->config['load_dir'];
-        
+
         $this->config = array_merge($this->config,Config::get('model_help'));
 
         $this->cleanMode = $input->getOption('clean');
