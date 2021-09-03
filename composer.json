@@ -29,7 +29,7 @@
                 "itinysun\\model\\helper\\Service"
             ],
             "config": {
-                "model_help": "config/model_help.php"
+                "model_help": "config/config.php"
             }
         }
     }
