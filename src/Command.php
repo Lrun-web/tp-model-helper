@@ -78,6 +78,12 @@ class Command extends \think\console\Command
          */
         'write_select_help'=>true,
 
+
+        /*
+         * 开启关联模型查询方法的辅助注释
+         */
+        'write_relation_model' => true,
+
         /*
          * 是否允许覆盖
          * 注意，这里仅检查原有模型是否含有该字段，并不检测字段是否需要更新
@@ -361,7 +367,7 @@ class Command extends \think\console\Command
                         array_shift($args);
                         $this->setMethod($name, "\\think\\db\\Query", $args);
                     }
-                } elseif ($method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
+                } elseif ($this->config['write_relation_model'] && $method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
                     //关联对象
                     try {
                         $return = $method->invoke($model);
