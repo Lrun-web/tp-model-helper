@@ -23,6 +23,11 @@
             "itinysun\\model\\helper\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
     "extra": {
         "think": {
             "services": [

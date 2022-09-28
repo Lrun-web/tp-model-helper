@@ -8,17 +8,19 @@
 // +----------------------------------------------------------------------
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
-namespace tests;
+namespace Tests;
 
 use think\console\Input;
 use think\console\Output;
 use itinysun\model\helper\Command;
+use Tests\model\User;
+use PHPUnit\Framework\TestCase;
 
-class CommandTest extends \PHPUnit_Framework_TestCase
+class CommandTest extends TestCase
 {
     public function testCommand()
     {
-        $input = new Input(['tests\\model\\User','-O']);
+        $input = new Input([User::class,'-O']);
 
         $output = new Output();
 
