@@ -3,7 +3,7 @@
 
 ## 功能
 - 根据数据库的字段，以及模型的获取器和修改器等方法，自动生成模型的注释。以便于IDE可以获得类型提示。
-- 根据模型字段写入schema，以后发布项目无需更新字段缓存，查看https://www.kancloud.cn/manual/thinkphp6_0/1037581了解schema
+- 根据模型字段写入schema|type，以后发布项目无需更新字段缓存，查看https://www.kancloud.cn/manual/thinkphp6_0/1037581 了解schema
 
 
 
