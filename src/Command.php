@@ -75,6 +75,12 @@ class Command extends \think\console\Command
         'write_schema'=>true,
 
         /*
+         * 开启模型字段type的写入，开启后自动转换的类型
+         * https://www.kancloud.cn/manual/thinkphp6_0/1037581
+         */
+        'write_type' => true,
+
+        /*
          * 开启模型查询方法的辅助注释
          * 包括 find findOrEmpty select
          */
@@ -94,7 +100,7 @@ class Command extends \think\console\Command
 
         'over_write_phpdoc'=>false,
         'over_write_schema'=>false,
-
+        'over_write_type' => false,
         /*
          * 设置读取模型的目录
          * 例如：
@@ -134,7 +140,7 @@ class Command extends \think\console\Command
         $this->cleanMode = $input->getOption('clean');
         if($this->cleanMode){
             $this->choice = $this->output->choice($input,"select clean mode:",['cancle','clean docs and schema','only docs','only schema'],'cancle');
-            if('cancle'==$this->choice){
+            if('cancle' === $this->choice){
                 $this->output->info('task cancle');
                 return;
             }
@@ -543,9 +549,10 @@ class Command extends \think\console\Command
             if($this->schema_exsit ){
                 if($this->config['over_write_schema']) $contents = preg_replace('/(\$schema[^;]+;)/i',$schema,$contents,1);
             }else{
-                $insert_pos = strpos($contents,';') ?: strpos($contents,'{');
+                $contents_ex = explode('class', $contents);
+                $insert_pos = strpos($contents_ex[1],';') ?: strpos($contents_ex[1],'{');
                 if(false!==$insert_pos){
-                    $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$schema, $insert_pos+1, 0);
+                    $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$schema, strlen($contents_ex[0] . 'class') + $insert_pos+1, 0);
                 }
             }
         }
@@ -556,9 +563,10 @@ class Command extends \think\console\Command
             if($this->type_exsit ){
                 if($this->config['over_write_type']) $contents = preg_replace('/(\$type[^;]+;)/i',$type,$contents,1);
             }else{
-                $insert_pos = strpos($contents,';') ?: strpos($contents,'{');
+                $contents_ex = explode('class', $contents);
+                $insert_pos = strpos($contents_ex[1],';') ?: strpos($contents_ex[1],'{');
                 if(false!==$insert_pos){
-                    $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$type, $insert_pos+1, 0);
+                    $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$type, strlen($contents_ex[0] . 'class') + $insert_pos+1, 0);
                 }
             }
         }
