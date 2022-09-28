@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 return [
     /*
      * 开启模型注释的写入，开启后IDE可以获得类型提示。
@@ -11,6 +13,12 @@ return [
      * https://www.kancloud.cn/manual/thinkphp6_0/1037581
      */
     'write_schema' => true,
+
+    /*
+     * 开启模型字段type的写入，开启后自动转换的类型
+     * https://www.kancloud.cn/manual/thinkphp6_0/1037581
+     */
+    'write_type' => true,
 
     /*
      * 开启模型查询方法的辅助注释
@@ -31,6 +39,7 @@ return [
 
     'over_write_phpdoc' => false,
     'over_write_schema' => false,
+    'over_write_type' => false,
 
     /*
      * 设置读取模型的目录
@@ -39,7 +48,7 @@ return [
      * 或者直接使用绝对路径
      */
     'load_dir' => [
-        'model'
+        'model',
     ],
 
     /*
@@ -48,6 +57,5 @@ return [
      * \think\Model::class
      */
     'ignore_model' => [
-
     ],
 ];

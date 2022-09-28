@@ -57,7 +57,9 @@ class Command extends \think\console\Command
     protected $clean = false;
 
     protected $schema=[];
+    protected $type=[];
     protected $schema_exsit=false;
+    protected $type_exsit=false;
 
     protected $config = [
         /*
@@ -316,6 +318,8 @@ class Command extends \think\console\Command
                             break;
                     }
                 }
+
+                $this->type[$name]=$type;
                 $comment = $field['comment'];
                 $this->setProperty($name, $type, true, true, $comment);
 
@@ -396,9 +400,11 @@ class Command extends \think\console\Command
     }
 
     protected function getPropertiesFromDefault($class){
-        $this->setMethod('find',basename($class).'|null',['mixed $data = null']);
-        $this->setMethod('findOrEmpty',basename($class),['mixed data = null']);
-        $this->setMethod('select',basename($class).'[]',['mixed data=  null']);
+        $class_ex = explode('\\', basename($class));
+        $class_name = end($class_ex);
+        $this->setMethod('find',$class_name.'|null',['mixed $data = null']);
+        $this->setMethod('findOrEmpty',$class_name,['mixed data = null']);
+        $this->setMethod('select',$class_name.'[]',['mixed data=  null']);
     }
 
     protected function clean($class){
@@ -505,7 +511,7 @@ class Command extends \think\console\Command
             }
 
             $arguments = implode(', ', $method['arguments']);
-
+            var_dump($method['type']);
             $tag    = DocBlock\Tags\Method::create("static {$method['type']} {$name}({$arguments})", $typeResolver, $descriptionFactory, $context);
             $tags[] = $tag;
         }
@@ -545,6 +551,19 @@ class Command extends \think\console\Command
             }
         }
 
+        if($this->config['write_type']){
+            $type = $this->buildType();
+            $this->type_exsit = strpos($contents,'$type');
+            if($this->type_exsit ){
+                if($this->config['over_write_type']) $contents = preg_replace('/(\$type[^;]+;)/i',$type,$contents,1);
+            }else{
+                $insert_pos = strpos($contents,'];') ?: strpos($contents,'{');
+                if(false!==$insert_pos){
+                    $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$type, $insert_pos+2, 0);
+                }
+            }
+        }
+
         if (file_put_contents($filename, $contents)) {
             $this->output->info('Update ' . $filename);
         }
@@ -553,6 +572,15 @@ class Command extends \think\console\Command
     protected function buildSchema(){
         $str = '$schema = ['.PHP_EOL;
         foreach ($this->schema as $k => $v){
+            $str.="\t\t'$k' => '$v',".PHP_EOL;
+        }
+        $str.="\t];";
+        return $str;
+    }
+
+    protected function buildType(){
+        $str = '$type = ['.PHP_EOL;
+        foreach ($this->type as $k => $v){
             $str.="\t\t'$k' => '$v',".PHP_EOL;
         }
         $str.="\t];";
