@@ -511,7 +511,6 @@ class Command extends \think\console\Command
             }
 
             $arguments = implode(', ', $method['arguments']);
-            var_dump($method['type']);
             $tag    = DocBlock\Tags\Method::create("static {$method['type']} {$name}({$arguments})", $typeResolver, $descriptionFactory, $context);
             $tags[] = $tag;
         }
@@ -544,7 +543,7 @@ class Command extends \think\console\Command
             if($this->schema_exsit ){
                 if($this->config['over_write_schema']) $contents = preg_replace('/(\$schema[^;]+;)/i',$schema,$contents,1);
             }else{
-                $insert_pos = strpos($contents,'{');
+                $insert_pos = strpos($contents,';') ?: strpos($contents,'{');
                 if(false!==$insert_pos){
                     $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$schema, $insert_pos+1, 0);
                 }
@@ -557,9 +556,9 @@ class Command extends \think\console\Command
             if($this->type_exsit ){
                 if($this->config['over_write_type']) $contents = preg_replace('/(\$type[^;]+;)/i',$type,$contents,1);
             }else{
-                $insert_pos = strpos($contents,'];') ?: strpos($contents,'{');
+                $insert_pos = strpos($contents,';') ?: strpos($contents,'{');
                 if(false!==$insert_pos){
-                    $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$type, $insert_pos+2, 0);
+                    $contents = substr_replace($contents, PHP_EOL."\t".'protected '.$type, $insert_pos+1, 0);
                 }
             }
         }
